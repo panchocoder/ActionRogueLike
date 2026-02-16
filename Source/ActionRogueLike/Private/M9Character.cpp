@@ -4,7 +4,7 @@
 #include "M9Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AM9Character::AM9Character()
@@ -14,10 +14,16 @@ AM9Character::AM9Character()
 
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("SpringArmComp");
+	SpringArmComp->bUsePawnControlRotation = true;
 	SpringArmComp->SetupAttachment(RootComponent);
 
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("CameraComp");
 	CameraComp->SetupAttachment(SpringArmComp);
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	bUseControllerRotationYaw = false;
+
 }
 
 // Called when the game starts or when spawned
@@ -27,12 +33,7 @@ void AM9Character::BeginPlay()
 	
 }
 
-void AM9Character::MoveForward(float Value)
-{
 
-	AddMovementInput(GetActorForwardVector(), Value);
-
-}
 
 // Called every frame
 void AM9Character::Tick(float DeltaTime)
@@ -47,8 +48,33 @@ void AM9Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AM9Character::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AM9Character::MoveRight);
 
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+}
+
+void AM9Character::MoveForward(float Value)
+{
+	
+	FRotator ControlRot = GetControlRotation();
+	ControlRot.Pitch = 0.0f;
+	ControlRot.Roll = 0.0f;
+
+
+	AddMovementInput(ControlRot.Vector(), Value);
 
 }
 
+void AM9Character::MoveRight(float Value)
+{
+
+	FRotator ControlRot = GetControlRotation();
+	ControlRot.Pitch = 0.0f;
+	ControlRot.Roll = 0.0f;
+
+	FVector RightVector = FRotationMatrix(ControlRot).GetScaledAxis(EAxis::Y);
+
+	AddMovementInput(RightVector, Value);
+
+}
