@@ -15,6 +15,11 @@ class ACTIONROGUELIKE_API AM9Character : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AActor> ProjectileClass;
+
 public:
 	// Sets default values for this character's properties
 	AM9Character();
@@ -34,6 +39,8 @@ protected:
 
 	void MoveRight(float Value);
 
+	void PrimaryAttack();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -42,3 +49,5 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 };
+
+// need to add jump, and explosive barrel C++
