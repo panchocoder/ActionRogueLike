@@ -55,6 +55,9 @@ void AM9Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AM9Character::PrimaryAttack);
 
+
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+
 }
 
 void AM9Character::MoveForward(float Value)
@@ -85,7 +88,7 @@ void AM9Character::MoveRight(float Value)
 
 void AM9Character::PrimaryAttack()
 {
-	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+	FVector HandLocation = GetMesh()->GetSocketLocation("Gun_R");
 
 	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
 
