@@ -17,9 +17,21 @@ class ACTIONROGUELIKE_API AM9Character : public ACharacter
 
 protected:
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> ProjectileClass;
+	
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> BlackHoleProjectileClass;
 
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> DashProjectileClass;
+
+	FTimerHandle TimerHandle_BlackholeAttack;
+
+	FTimerHandle TimerHandle_Dash;
+
+
+	//FTimerHandle TimerHandle_PrimaryAttack;
 public:
 	// Sets default values for this character's properties
 	AM9Character();
@@ -40,7 +52,19 @@ protected:
 	void MoveRight(float Value);
 
 	void PrimaryAttack();
+	
+	//void PrimaryAttack_TimeElapsed();
+	
+	void BlackHoleAttack();
 
+	void BlackholeAttack_TimeElapsed();
+	
+	void Dash();
+
+	void Dash_TimeElapsed();
+	
+	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+	
 
 public:	
 	// Called every frame
@@ -51,4 +75,4 @@ public:
 
 };
 
-// need to add jump, and explosive barrel C++
+
